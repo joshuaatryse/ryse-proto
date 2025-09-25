@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Section, Text, Link, Hr, Img } from '@react-email/components';
+import { Section, Text, Link, Hr } from '@react-email/components';
 
 interface EmailFooterProps {
   isPMBranded?: boolean;
@@ -57,11 +57,6 @@ const divider = {
   border: 'none',
   borderTop: '1px solid #EBEBEB',
   margin: '0 0 24px 0',
-};
-
-const footerLogo = {
-  margin: '0 auto 16px auto',
-  display: 'block' as const,
 };
 
 const footerText = {

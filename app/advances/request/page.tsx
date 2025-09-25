@@ -530,7 +530,7 @@ export default function AdvanceRequestPage() {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell>${property.monthlyRent.toLocaleString()}</TableCell>
+                          <TableCell>${Math.round(property.monthlyRent).toLocaleString()}</TableCell>
                           <TableCell>
                             {selectedPropertyIds.has(property._id) ? (
                               <Select
@@ -562,7 +562,7 @@ export default function AdvanceRequestPage() {
                           </TableCell>
                           <TableCell>
                             <Chip size="sm" variant="flat" className="bg-neutral-01">
-                              {monthsRemaining} mo / ${Math.floor(property.monthlyRent * monthsRemaining * 0.9).toLocaleString()}
+                              {monthsRemaining} mo / ${Math.round(property.monthlyRent * monthsRemaining * 0.9).toLocaleString()}
                             </Chip>
                           </TableCell>
                         </TableRow>
@@ -926,7 +926,7 @@ export default function AdvanceRequestPage() {
                             {property.address.unit && `Unit ${property.address.unit}`}
                           </p>
                           <p className="text-sm text-neutral-06 mt-1">
-                            ${property.monthlyRent.toLocaleString()}/mo
+                            ${Math.round(property.monthlyRent).toLocaleString()}/mo
                           </p>
                         </div>
                       ))}

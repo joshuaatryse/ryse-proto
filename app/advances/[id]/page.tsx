@@ -172,7 +172,7 @@ export default function PropertyDetailsPage() {
                 </div>
                 <div>
                   <p className="text-sm text-neutral-06">Monthly Rent</p>
-                  <p className="text-xl font-bold">${property.monthlyRent.toLocaleString()}</p>
+                  <p className="text-xl font-bold">${Math.round(property.monthlyRent).toLocaleString()}</p>
                 </div>
               </div>
             </CardBody>
@@ -186,7 +186,7 @@ export default function PropertyDetailsPage() {
                 </div>
                 <div>
                   <p className="text-sm text-neutral-06">Security Deposit</p>
-                  <p className="text-xl font-bold">${property.securityDeposit.toLocaleString()}</p>
+                  <p className="text-xl font-bold">${Math.round(property.securityDeposit).toLocaleString()}</p>
                 </div>
               </div>
             </CardBody>
@@ -219,7 +219,7 @@ export default function PropertyDetailsPage() {
                     {currentAdvance ? "Active Advance" : "Total Advanced"}
                   </p>
                   <p className="text-xl font-bold">
-                    ${currentAdvance ? (currentAdvance.remainingBalance?.toLocaleString() || currentAdvance.amount.toLocaleString()) : totalAdvanced.toLocaleString()}
+                    ${currentAdvance ? (Math.round(currentAdvance.remainingBalance || currentAdvance.amount).toLocaleString()) : Math.round(totalAdvanced).toLocaleString()}
                   </p>
                   {currentAdvance && (
                     <p className="text-xs text-neutral-05">
@@ -422,7 +422,7 @@ export default function PropertyDetailsPage() {
                       <div>
                         <p className="text-sm text-primary-06">Amount</p>
                         <p className="text-xl font-bold text-primary-07">
-                          ${currentAdvance.amount.toLocaleString()}
+                          ${Math.round(currentAdvance.amount).toLocaleString()}
                         </p>
                       </div>
                       <div>
@@ -453,7 +453,7 @@ export default function PropertyDetailsPage() {
                           />
                         </div>
                         <p className="text-xs text-primary-06 mt-1">
-                          ${advanceHistory.currentUtilization.remainingBalance.toLocaleString()} remaining
+                          ${Math.round(advanceHistory.currentUtilization.remainingBalance).toLocaleString()} remaining
                         </p>
                       </div>
                     )}
@@ -472,7 +472,7 @@ export default function PropertyDetailsPage() {
                             <div className="flex justify-between items-start">
                               <div>
                                 <div className="flex items-center gap-2 mb-2">
-                                  <p className="font-medium text-lg">${advance.amount.toLocaleString()}</p>
+                                  <p className="font-medium text-lg">${Math.round(advance.amount).toLocaleString()}</p>
                                   <Chip size="sm" className="bg-warning-100 text-warning-700">
                                     {advance.status}
                                   </Chip>
@@ -496,7 +496,7 @@ export default function PropertyDetailsPage() {
                             <div className="flex justify-between items-start">
                               <div>
                                 <div className="flex items-center gap-2 mb-2">
-                                  <p className="font-medium text-lg">${advance.amount.toLocaleString()}</p>
+                                  <p className="font-medium text-lg">${Math.round(advance.amount).toLocaleString()}</p>
                                   <Chip
                                     size="sm"
                                     variant="flat"

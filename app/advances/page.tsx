@@ -578,7 +578,7 @@ export default function PropertiesPage() {
           if (!property?.monthlyRent) return "-";
           return (
             <div className="text-small font-medium">
-              ${property.monthlyRent.toLocaleString()}
+              ${Math.round(property.monthlyRent).toLocaleString()}
             </div>
           );
         case "status":
@@ -644,7 +644,7 @@ export default function PropertiesPage() {
 
           return (
             <div className="text-small font-medium">
-              ${amount.toLocaleString()}
+              ${Math.round(amount).toLocaleString()}
             </div>
           );
         }
@@ -660,7 +660,7 @@ export default function PropertiesPage() {
           const remaining = advanceData.remainingBalance || advanceData.amount || 0;
           return (
             <div className="text-small font-medium">
-              ${remaining.toLocaleString()}
+              ${Math.round(remaining).toLocaleString()}
             </div>
           );
         }
@@ -675,7 +675,7 @@ export default function PropertiesPage() {
         case "securityDeposit":
           return property?.securityDeposit ? (
             <div className="text-small">
-              ${property.securityDeposit.toLocaleString()}
+              ${Math.round(property.securityDeposit).toLocaleString()}
             </div>
           ) : (
             <span className="text-small text-default-400">-</span>

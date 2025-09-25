@@ -446,10 +446,10 @@ export default function PropertyManagerDashboard() {
                         </TableCell>
                         <TableCell className="py-2">{advance.owner}</TableCell>
                         <TableCell className="py-2 font-medium">
-                          ${(advance.remainingBalance || advance.amount).toLocaleString()}
+                          ${Math.round(advance.remainingBalance || advance.amount).toLocaleString()}
                         </TableCell>
                         <TableCell className="py-2 font-medium">
-                          ${(advance.commissionAmount || 0).toLocaleString()}
+                          ${Math.round(advance.commissionAmount || 0).toLocaleString()}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -521,10 +521,10 @@ export default function PropertyManagerDashboard() {
                         </TableCell>
                         <TableCell className="py-2">{advance.owner}</TableCell>
                         <TableCell className="py-2 font-medium">
-                          ${advance.amount.toLocaleString()}
+                          ${Math.round(advance.amount).toLocaleString()}
                         </TableCell>
                         <TableCell className="py-2 font-medium">
-                          ${(advance.commissionAmount || 0).toLocaleString()}
+                          ${Math.round(advance.commissionAmount || 0).toLocaleString()}
                         </TableCell>
                         <TableCell className="py-2">
                           {new Date(advance.repaidAt || advance.requestedAt).toLocaleDateString()}
