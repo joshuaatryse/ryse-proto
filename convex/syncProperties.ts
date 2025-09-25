@@ -185,21 +185,17 @@ function generateOwners(count: number = 150) {
   ];
 
   const owners = [];
-  const usedEmails = new Set();
 
-  while (owners.length < count) {
+  for (let i = 0; i < count; i++) {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${owners.length}@email.com`;
+    const ownerNumber = i + 1; // Start from 1, not 0
 
-    if (!usedEmails.has(email)) {
-      usedEmails.add(email);
-      owners.push({
-        name: `${firstName} ${lastName}`,
-        email: email,
-        phone: `(555) ${String(Math.floor(Math.random() * 900) + 100).padStart(3, '0')}-${String(Math.floor(Math.random() * 9000) + 1000).padStart(4, '0')}`
-      });
-    }
+    owners.push({
+      name: `${firstName} ${lastName}`,
+      email: `sean+owner${ownerNumber}@rysemarket.com`,
+      phone: `(555) ${String(Math.floor(Math.random() * 900) + 100).padStart(3, '0')}-${String(Math.floor(Math.random() * 9000) + 1000).padStart(4, '0')}`
+    });
   }
 
   return owners;
