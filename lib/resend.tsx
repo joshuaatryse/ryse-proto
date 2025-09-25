@@ -6,7 +6,7 @@ import AdvanceRequestEmail from '@/emails/advance-request.email';
 import AdvanceOwnerResponseEmail from '@/emails/advance-owner-response.email';
 import AdvanceRyseDecisionEmail from '@/emails/advance-ryse-decision.email';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || '');
 
 export default resend;
 
