@@ -44,7 +44,7 @@ export const AdvanceRyseDecisionEmail: React.FC<AdvanceRyseDecisionEmailProps> =
 
   return (
     <EmailLayout preview={`Advance ${decision === 'approved' ? 'Approved' : 'Denied'} - $${amount.toLocaleString()}`}>
-      <EmailHeader />
+      <EmailHeader isPMBranded={recipientType === 'owner'} />
 
       <Section style={{ padding: '40px 20px' }}>
         <Heading style={heading}>
@@ -54,7 +54,7 @@ export const AdvanceRyseDecisionEmail: React.FC<AdvanceRyseDecisionEmailProps> =
         <Text style={paragraph}>
           {isApproved ? (
             isOwner ? (
-              <>Great news! Your rent advance has been approved by Ryse.</>
+              <>Great news! Your rent advance has been approved.</>
             ) : (
               <>Great news! Your rent advance to {ownerName} has been approved by Ryse.</>
             )
@@ -301,16 +301,19 @@ export const AdvanceRyseDecisionEmail: React.FC<AdvanceRyseDecisionEmailProps> =
         ` }} />
 
         <Text style={signature}>
-          Questions? Contact us at support@ryse.com or call 1-800-RYSE-NOW
+          {recipientType === 'owner'
+            ? `Questions? Contact your property manager at ${pmCompanyName} for support.`
+            : 'Questions? Contact us at support@ryse.com or call 1-800-RYSE-NOW'
+          }
         </Text>
 
         <Text style={signature}>
           Best regards,<br />
-          The Ryse Team
+          {recipientType === 'owner' ? 'The Nomad Team' : 'The Ryse Team'}
         </Text>
       </Section>
 
-      <EmailFooter />
+      <EmailFooter isPMBranded={recipientType === 'owner'} />
     </EmailLayout>
   );
 };

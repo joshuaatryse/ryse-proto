@@ -37,7 +37,7 @@ export const AdvanceRequestEmail: React.FC<AdvanceRequestEmailProps> = ({
 
   return (
     <EmailLayout preview={`Rent Advance Offer from ${pmCompanyName}`}>
-      <EmailHeader />
+      <EmailHeader isPMBranded={true} />
 
       <Section style={{ padding: '40px 20px' }}>
         <Heading style={heading}>
@@ -45,7 +45,7 @@ export const AdvanceRequestEmail: React.FC<AdvanceRequestEmailProps> = ({
         </Heading>
 
         <Text style={paragraph}>
-          {pmName} from <strong>{pmCompanyName}</strong> has sent you an offer to receive an advance on your rental income through Ryse.
+          {pmName} from <strong>{pmCompanyName}</strong> has sent you an offer to receive an advance on your rental income through Nomad.
         </Text>
 
         {/* Modern Summary Card - Advance Offer */}
@@ -288,11 +288,11 @@ export const AdvanceRequestEmail: React.FC<AdvanceRequestEmailProps> = ({
 
         <Text style={signature}>
           Best regards,<br />
-          The Ryse Team
+          The Nomad Team
         </Text>
       </Section>
 
-      <EmailFooter />
+      <EmailFooter isPMBranded={true} />
     </EmailLayout>
   );
 };

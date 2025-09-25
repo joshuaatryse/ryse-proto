@@ -438,7 +438,7 @@ function OwnerAdvanceInviteContent() {
           <CardBody className="text-center py-8">
             <Icon icon="solar:danger-triangle-bold" className="text-4xl text-danger mx-auto mb-4" />
             <h2 className="text-xl font-semibold mb-2">Invalid Link</h2>
-            <p className="text-neutral-06">
+            <p className="text-neutral-07">
               This advance request link is invalid or has been used.
             </p>
           </CardBody>
@@ -484,14 +484,14 @@ function OwnerAdvanceInviteContent() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Image
-              src="/ryse-logo-primary.svg"
-              alt="Ryse"
+              src="/nomad.svg"
+              alt="Nomad"
               width={120}
               height={40}
               className="h-10 w-auto"
             />
             <Chip className="bg-primary-01 text-primary-06">
-              Rent Advance Platform
+              Manage Your Property Like a Pro
             </Chip>
           </div>
         </div>
@@ -1059,7 +1059,7 @@ function OwnerAdvanceInviteContent() {
                       />
                     </div>
                     <h3 className="text-lg font-semibold mb-2">Verify Your Identity</h3>
-                    <p className="text-sm text-neutral-06 mb-6">
+                    <p className="text-sm text-neutral-07 mb-6">
                       We use Stripe Identity to securely verify your information.
                       This helps protect against fraud and ensures secure fund transfers.
                     </p>
@@ -1068,15 +1068,15 @@ function OwnerAdvanceInviteContent() {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <Icon icon="solar:check-circle-linear" className="text-indigo-600" />
-                          <span className="text-xs text-neutral-06">Photo of your government ID</span>
+                          <span className="text-xs text-neutral-07">Photo of your government ID</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Icon icon="solar:check-circle-linear" className="text-indigo-600" />
-                          <span className="text-xs text-neutral-06">Selfie for verification</span>
+                          <span className="text-xs text-neutral-07">Selfie for verification</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Icon icon="solar:check-circle-linear" className="text-indigo-600" />
-                          <span className="text-xs text-neutral-06">Instant verification</span>
+                          <span className="text-xs text-neutral-07">Instant verification</span>
                         </div>
                       </div>
                     </div>
@@ -1174,7 +1174,7 @@ function OwnerAdvanceInviteContent() {
                     {verificationStep === "complete" && (
                       <div>
                         <h3 className="text-lg font-semibold mb-2 text-success-700">Identity Verified!</h3>
-                        <p className="text-sm text-neutral-06">
+                        <p className="text-sm text-neutral-07">
                           Your identity has been successfully verified. Proceeding to document signing...
                         </p>
                       </div>
@@ -1201,7 +1201,7 @@ function OwnerAdvanceInviteContent() {
                   <p className="text-sm font-semibold mb-2">Advance Agreement Summary</p>
                   <p className="text-xs text-neutral-07 leading-relaxed">
                     This is a rent advance agreement between you (the Owner) and your Property Manager
-                    facilitated by Ryse. By signing, you agree to receive ${parseInt(counterAmount || (advanceRequest.totalAmount || advanceRequest.requestedAmount || 0).toString()).toLocaleString()}
+                    facilitated by Nomad. By signing, you agree to receive ${parseInt(counterAmount || (advanceRequest.totalAmount || advanceRequest.requestedAmount || 0).toString()).toLocaleString()}
                     as an advance on your rental income.
                   </p>
                   <p className="text-xs text-neutral-07 mt-2 leading-relaxed">
@@ -1240,7 +1240,7 @@ function OwnerAdvanceInviteContent() {
 
                   {signatureName && (
                     <div className="bg-gradient-to-br from-neutral-01 to-neutral-02 rounded-lg p-6 border-2 border-dashed border-neutral-03">
-                      <p className="text-xs text-neutral-06 mb-2">Your Signature:</p>
+                      <p className="text-xs text-neutral-07 mb-2">Your Signature:</p>
                       <div className="h-16 flex items-center justify-left">
                         <p className="text-3xl font-signature text-neutral-08" style={{
                           fontFamily: "'Brush Script MT', 'Lucida Handwriting', 'Lucida Calligraphy', cursive",
@@ -1249,7 +1249,7 @@ function OwnerAdvanceInviteContent() {
                           {signatureName}
                         </p>
                       </div>
-                      <p className="text-xs text-neutral-06 mt-2">
+                      <p className="text-xs text-neutral-07 mt-2">
                         Date: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                       </p>
                     </div>
@@ -1320,13 +1320,13 @@ function OwnerAdvanceInviteContent() {
                 </div>
               )}
 
-              <p className="text-neutral-06 mb-4">
+              <p className="text-neutral-07 mb-4">
                 {responseType === "accept" && "Your acceptance has been recorded. The advance will be reviewed and you'll receive funds within 2-3 business days after approval."}
                 {responseType === "counter" && (
                   <>
                     <span className="font-medium">Your counter offer has been sent to {propertyManager?.company || 'your property manager'}.</span>
                     <br />
-                    <span className="text-sm text-neutral-06 mt-2 block">
+                    <span className="text-sm text-neutral-07 mt-2 block">
                       If they accept, funds will be automatically disbursed within 2-3 business days.
                     </span>
                   </>
@@ -1360,7 +1360,7 @@ function OwnerAdvanceInviteContent() {
                 />
               )}
 
-              <p className="text-sm text-neutral-06 mb-4">
+              <p className="text-sm text-neutral-07 mb-4">
                 You will receive an email confirmation shortly.
               </p>
               <Button

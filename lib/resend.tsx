@@ -154,7 +154,7 @@ www.ryse.com
     `;
 
     const result = await resend.emails.send({
-      from: 'Ryse <advances@rysemarket.com>',
+      from: 'Nomad <advances@rysemarket.com>',
       to: [to],
       subject: `Rent Advance Offer from ${pmCompanyName} - $${requestedAmount.toLocaleString()}`,
       html: emailHtml,
@@ -244,7 +244,7 @@ export async function sendAdvanceRyseDecisionEmail(data: AdvanceRyseDecisionEmai
     );
 
     const result = await resend.emails.send({
-      from: 'Ryse <notifications@rysemarket.com>',
+      from: data.recipientType === 'owner' ? 'Nomad <notifications@rysemarket.com>' : 'Ryse <notifications@rysemarket.com>',
       to: [to],
       subject: `Advance ${data.decision === 'approved' ? 'Approved' : 'Denied'} - $${data.amount.toLocaleString()}`,
       html: emailHtml,

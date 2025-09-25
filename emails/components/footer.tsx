@@ -1,37 +1,47 @@
 import * as React from 'react';
 import { Section, Text, Link, Hr, Img } from '@react-email/components';
 
-export const EmailFooter: React.FC = () => {
+interface EmailFooterProps {
+  isPMBranded?: boolean;
+}
+
+export const EmailFooter: React.FC<EmailFooterProps> = ({ isPMBranded = false }) => {
   return (
     <Section style={footer}>
       <Hr style={divider} />
 
       <Text style={footerText}>
-        © 2025 Ryse. All rights reserved.
+        © 2025 {isPMBranded ? 'Nomad' : 'Ryse'}. All rights reserved.
       </Text>
 
       <Text style={footerLinks}>
-        <Link href="https://ryse.com" style={link}>
+        <Link href={isPMBranded ? "https://nomadlease.com" : "https://ryse.com"} style={link}>
           Visit our website
         </Link>
         {' • '}
-        <Link href="https://ryse.com/privacy" style={link}>
+        <Link href={isPMBranded ? "https://nomadlease.com/privacy" : "https://ryse.com/privacy"} style={link}>
           Privacy Policy
         </Link>
         {' • '}
-        <Link href="https://ryse.com/terms" style={link}>
+        <Link href={isPMBranded ? "https://nomadlease.com/terms" : "https://ryse.com/terms"} style={link}>
           Terms of Service
         </Link>
       </Text>
 
       <Text style={footerAddress}>
-        Ryse, Inc.<br />
-        123 Main Street, Suite 100<br />
-        San Francisco, CA 94105
+        {isPMBranded ? 'Powered by Nomad' : 'Ryse, Inc.'}<br />
+        {!isPMBranded && (
+          <>
+            123 Main Street, Suite 100<br />
+            San Francisco, CA 94105
+          </>
+        )}
       </Text>
 
       <Text style={footerNote}>
-        This email was sent to you because you were invited to join Ryse.
+        This email was sent to you {isPMBranded
+          ? 'by your property management company using Nomad'
+          : 'because you were invited to join Ryse'}.
         If you believe this was sent in error, please ignore this email.
       </Text>
     </Section>

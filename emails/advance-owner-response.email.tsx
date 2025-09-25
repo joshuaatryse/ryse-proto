@@ -69,7 +69,7 @@ export const AdvanceOwnerResponseEmail: React.FC<AdvanceOwnerResponseEmailProps>
 
   return (
     <EmailLayout preview={`${getResponseTitle()} - ${ownerName}`}>
-      <EmailHeader />
+      <EmailHeader isPMBranded={false} />
 
       <Section style={{ padding: '40px 20px' }}>
         <Heading style={heading}>
@@ -284,7 +284,7 @@ export const AdvanceOwnerResponseEmail: React.FC<AdvanceOwnerResponseEmailProps>
         </Text>
       </Section>
 
-      <EmailFooter />
+      <EmailFooter isPMBranded={false} />
     </EmailLayout>
   );
 };
