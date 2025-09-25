@@ -160,7 +160,7 @@ const fallbackPropertyAddresses = [
 ];
 
 // Owner name generation for 500 properties
-function generateOwners(count: number = 150) {
+function generateOwners(count: number = 50) {
   const firstNames = [
     "Robert", "Jennifer", "David", "Lisa", "Michael", "Sarah", "James", "Emily",
     "Christopher", "Patricia", "Daniel", "Michelle", "Kevin", "Nancy", "Brian", "Amanda",
@@ -314,13 +314,13 @@ export const syncProperties = mutation({
       throw new Error("Property manager not found");
     }
 
-    // Generate 500 property addresses and 150 owners
+    // Generate 500 property addresses and 50 owners
     const propertyAddresses = generateAddresses(500);
-    const ownerNames = generateOwners(150);
+    const ownerNames = generateOwners(50);
 
     // Get or create owners (group properties by owner)
     const ownersMap = new Map<string, Id<"owners">>();
-    const propertiesPerOwner = Math.ceil(500 / 150); // ~3-4 properties per owner
+    const propertiesPerOwner = Math.ceil(500 / 50); // ~10 properties per owner
 
     // Create or get owners
     for (let i = 0; i < ownerNames.length; i++) {
@@ -349,10 +349,11 @@ export const syncProperties = mutation({
     const ownerIds = Array.from(ownersMap.values());
     const createdProperties: Id<"properties">[] = [];
 
-    // Create properties and distribute among owners
+    // Create properties and randomly distribute among owners
     for (let i = 0; i < propertyAddresses.length; i++) {
       const address = propertyAddresses[i];
-      const ownerIndex = Math.floor(i / propertiesPerOwner) % ownerIds.length;
+      // Randomly select an owner for each property
+      const ownerIndex = Math.floor(Math.random() * ownerIds.length);
       const ownerId = ownerIds[ownerIndex];
 
       const propertyData = generatePropertyData(address, i);
