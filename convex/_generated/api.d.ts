@@ -25,6 +25,8 @@ import type * as owners from "../owners.js";
 import type * as properties from "../properties.js";
 import type * as propertyManagers from "../propertyManagers.js";
 import type * as seed from "../seed.js";
+import type * as seedAdvances from "../seedAdvances.js";
+import type * as seedPropertiesForAdvances from "../seedPropertiesForAdvances.js";
 import type * as syncProperties from "../syncProperties.js";
 import type * as syncPropertiesWithImages from "../syncPropertiesWithImages.js";
 import type * as updateOwnerEmails from "../updateOwnerEmails.js";
@@ -51,6 +53,8 @@ declare const fullApi: ApiFromModules<{
   properties: typeof properties;
   propertyManagers: typeof propertyManagers;
   seed: typeof seed;
+  seedAdvances: typeof seedAdvances;
+  seedPropertiesForAdvances: typeof seedPropertiesForAdvances;
   syncProperties: typeof syncProperties;
   syncPropertiesWithImages: typeof syncPropertiesWithImages;
   updateOwnerEmails: typeof updateOwnerEmails;

@@ -22,6 +22,7 @@ export default function PortfolioForm({ initialData, onNext, onBack }: Portfolio
   // Calculation constants
   const MAX_MONTHS_ADVANCE = 11;
   const ADVANCE_RATE = 0.9; // 90%
+  const COMMISSION_RATE = 0.02; // 2%
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,57 +98,126 @@ export default function PortfolioForm({ initialData, onNext, onBack }: Portfolio
       </div>
 
       {propertiesManaged && averageRent && (
-        <div className="p-6 bg-secondary-01 rounded-lg border border-secondary-02 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <p className="text-sm text-secondary-07">Total Potential Advance</p>
-            <Tooltip
-              content={
-                <div className="p-3 space-y-2">
-                  <p className="text-xs font-medium mb-2">Calculation Breakdown</p>
-                  <div className="space-y-1.5 text-xs">
-                    <div className="flex justify-between gap-4">
-                      <span>{propertiesManaged} properties</span>
-                      <span className="font-medium">{propertiesManaged}</span>
-                    </div>
-                    <div className="flex justify-between gap-4">
-                      <span>Monthly rent</span>
-                      <span className="font-medium">{formatCurrency(averageRent.replace(/[^0-9]/g, ""))}</span>
-                    </div>
-                    <div className="flex justify-between gap-4">
-                      <span>Max advance</span>
-                      <span className="font-medium">× 11 months</span>
-                    </div>
-                    <div className="flex justify-between gap-4">
-                      <span>Advance rate</span>
-                      <span className="font-medium">× 90%</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Total Advance Card */}
+          <div className="p-6 bg-primary-01 rounded-lg border border-primary-03 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <p className="text-sm text-primary-08">Total Potential Advance</p>
+              <Tooltip
+                content={
+                  <div className="p-3 space-y-2">
+                    <p className="text-xs font-medium mb-2">Calculation Breakdown</p>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex justify-between gap-4">
+                        <span>{propertiesManaged} properties</span>
+                        <span className="font-medium">{propertiesManaged}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>Monthly rent</span>
+                        <span className="font-medium">{formatCurrency(averageRent.replace(/[^0-9]/g, ""))}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>Max advance</span>
+                        <span className="font-medium">× 11 months</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>Advance rate</span>
+                        <span className="font-medium">× 90%</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              }
-              placement="top"
-              className="max-w-xs"
-            >
-              <button type="button" className="text-secondary-06 hover:text-secondary-07">
-                <InformationCircleIcon className="w-4 h-4" />
-              </button>
-            </Tooltip>
+                }
+                placement="top"
+                className="max-w-xs"
+              >
+                <button type="button" className="text-primary-08 hover:text-primary-09">
+                  <InformationCircleIcon className="w-4 h-4" />
+                </button>
+              </Tooltip>
+            </div>
+            <p className="text-2xl md:text-3xl font-medium text-primary-08">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(
+                parseInt(propertiesManaged) *
+                parseInt(averageRent.replace(/[^0-9]/g, "")) *
+                MAX_MONTHS_ADVANCE *
+                ADVANCE_RATE
+              )}
+            </p>
+            <p className="text-xs text-primary-07 mt-2">
+              Maximum advance capacity
+            </p>
           </div>
-          <p className="text-3xl font-medium text-secondary-08">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            }).format(
-              parseInt(propertiesManaged) *
-              parseInt(averageRent.replace(/[^0-9]/g, "")) *
-              MAX_MONTHS_ADVANCE *
-              ADVANCE_RATE
-            )}
-          </p>
-          <p className="text-xs text-secondary-06 mt-2">
-            Maximum advance capacity across your portfolio
-          </p>
+
+          {/* Monthly Commission Card */}
+          <div className="p-6 bg-secondary-01 rounded-lg border border-secondary-08 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <p className="text-sm text-secondary-08">Potential Monthly Commission</p>
+              <Tooltip
+                content={
+                  <div className="p-3 space-y-2">
+                    <p className="text-xs font-medium mb-2">Commission Calculation</p>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex justify-between gap-4">
+                        <span>{propertiesManaged} properties</span>
+                        <span className="font-medium">{propertiesManaged}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>Avg monthly rent</span>
+                        <span className="font-medium">{formatCurrency(averageRent.replace(/[^0-9]/g, ""))}</span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>Total monthly rent</span>
+                        <span className="font-medium">
+                          {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD",
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(
+                            parseInt(propertiesManaged) * parseInt(averageRent.replace(/[^0-9]/g, ""))
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <span>Commission rate</span>
+                        <span className="font-medium">× 2%</span>
+                      </div>
+                    </div>
+                    <div className="pt-2 mt-2 border-t border-neutral-03">
+                      <p className="text-xs font-medium">Note:</p>
+                      <p className="text-xs mt-1">Commission is calculated on total lease rent, not the advance amount.</p>
+                    </div>
+                  </div>
+                }
+                placement="top"
+                className="max-w-xs"
+              >
+                <button type="button" className="text-secondary-08 hover:text-secondary-08">
+                  <InformationCircleIcon className="w-4 h-4" />
+                </button>
+              </Tooltip>
+            </div>
+            <p className="text-2xl md:text-3xl font-bold text-secondary-08">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(
+                parseInt(propertiesManaged) *
+                parseInt(averageRent.replace(/[^0-9]/g, "")) *
+                COMMISSION_RATE
+              )}
+            </p>
+            <p className="text-xs text-secondary-08 mt-2">
+              Monthly earnings potential
+            </p>
+          </div>
         </div>
       )}
 

@@ -97,6 +97,7 @@ interface Property {
 export default function PropertiesPage() {
   const router = useRouter();
   const [viewMode, setViewMode] = useState<"properties" | "advances">("properties");
+  const [advanceViewType, setAdvanceViewType] = useState<"active" | "completed">("active");
   const [filterValue, setFilterValue] = useState("");
   const [debouncedFilterValue, setDebouncedFilterValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -159,13 +160,26 @@ export default function PropertiesPage() {
     propertyManagerId ? { propertyManagerId: propertyManagerId as Id<"propertyManagers"> } : "skip"
   );
 
-  // Fetch advances (for advances view)
-  const advances = useQuery(
-    api.advances.getAdvancesByPropertyManager,
-    propertyManagerId && viewMode === "advances"
-      ? { propertyManagerId: propertyManagerId as Id<"propertyManagers">, includeRepaid: true }
+  // Fetch active advances (for advances view - active tab)
+  const activeAdvances = useQuery(
+    api.advances.getActiveAdvancesByPropertyManager,
+    propertyManagerId && viewMode === "advances" && advanceViewType === "active"
+      ? { propertyManagerId: propertyManagerId as Id<"propertyManagers"> }
       : "skip"
   );
+
+  // Fetch completed advances (for advances view - completed tab)
+  const completedAdvances = useQuery(
+    api.advances.getCompletedAdvancesByPropertyManager,
+    propertyManagerId && viewMode === "advances" && advanceViewType === "completed"
+      ? { propertyManagerId: propertyManagerId as Id<"propertyManagers"> }
+      : "skip"
+  );
+
+  // Combine advances based on view type
+  const advances = viewMode === "advances"
+    ? (advanceViewType === "active" ? activeAdvances : completedAdvances)
+    : null;
 
   // Get unique owners for filter dropdown
   const uniqueOwners = useMemo(() => {
@@ -826,30 +840,53 @@ export default function PropertiesPage() {
             <div className="space-y-4">
               {/* View Mode Toggle */}
               <div className="flex justify-between items-center">
-                <div className="bg-neutral-01 rounded-lg p-1 flex gap-1">
-                  <Button
-                    size="sm"
-                    variant={viewMode === "properties" ? "flat" : "light"}
-                    className={viewMode === "properties" ? "bg-white shadow-sm" : ""}
-                    onPress={() => setViewMode("properties")}
-                    startContent={<Icon icon="solar:home-2-linear" width={18} />}
-                  >
-                    Properties View
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={viewMode === "advances" ? "flat" : "light"}
-                    className={viewMode === "advances" ? "bg-white shadow-sm" : ""}
-                    onPress={() => setViewMode("advances")}
-                    startContent={<Icon icon="solar:money-bag-linear" width={18} />}
-                  >
-                    Advances View
-                  </Button>
+                <div className="flex gap-4 items-center">
+                  <div className="bg-neutral-01 rounded-lg p-1 flex gap-1">
+                    <Button
+                      size="sm"
+                      variant={viewMode === "properties" ? "flat" : "light"}
+                      className={viewMode === "properties" ? "bg-white shadow-sm" : ""}
+                      onPress={() => setViewMode("properties")}
+                      startContent={<Icon icon="solar:home-2-linear" width={18} />}
+                    >
+                      Properties View
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={viewMode === "advances" ? "flat" : "light"}
+                      className={viewMode === "advances" ? "bg-white shadow-sm" : ""}
+                      onPress={() => setViewMode("advances")}
+                      startContent={<Icon icon="solar:money-bag-linear" width={18} />}
+                    >
+                      Advances View
+                    </Button>
+                  </div>
+                  {/* Show sub-tabs when in advances view */}
+                  {viewMode === "advances" && (
+                    <div className="bg-neutral-01 rounded-lg p-1 flex gap-1">
+                      <Button
+                        size="sm"
+                        variant={advanceViewType === "active" ? "flat" : "light"}
+                        className={advanceViewType === "active" ? "bg-success-50 text-success-600 shadow-sm" : ""}
+                        onPress={() => setAdvanceViewType("active")}
+                      >
+                        Active
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={advanceViewType === "completed" ? "flat" : "light"}
+                        className={advanceViewType === "completed" ? "bg-default-100 text-default-600 shadow-sm" : ""}
+                        onPress={() => setAdvanceViewType("completed")}
+                      >
+                        Completed
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <div className="text-sm text-neutral-05">
                   {viewMode === "properties"
                     ? `${properties?.length || 0} properties`
-                    : `${advances?.length || 0} advances`}
+                    : `${advances?.length || 0} ${advanceViewType} advances`}
                 </div>
               </div>
 
@@ -1247,7 +1284,9 @@ export default function PropertiesPage() {
                   .filter((item): item is React.ReactElement => item !== null)}
               </TableHeader>
               <TableBody
-                emptyContent={viewMode === "advances" ? "No advances found" : "No properties found"}
+                emptyContent={viewMode === "advances"
+                  ? (advanceViewType === "active" ? "No active advances found" : "No completed advances found")
+                  : "No properties found"}
                 loadingContent={<Spinner />}
                 loadingState={viewMode === "advances" ? (!advances ? "loading" : undefined) : (!properties ? "loading" : undefined)}
               >

@@ -83,7 +83,7 @@ export default function MarketingPreferenceForm({ initialPreference, onNext, onB
                     selected === option.id ? "bg-primary-02" : "bg-neutral-01"
                   )}
                 >
-                  <div className={selected === option.id ? "text-primary-06" : "text-neutral-06"}>
+                  <div className={selected === option.id ? "text-primary-06" : "text-neutral-08"}>
                     {option.icon}
                   </div>
                 </div>
@@ -96,14 +96,14 @@ export default function MarketingPreferenceForm({ initialPreference, onNext, onB
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-neutral-06 mb-3">{option.description}</p>
+                  <p className="text-sm text-neutral-08 mb-3">{option.description}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {option.features.map((feature, index) => (
                       <div key={index} className="flex items-center gap-1.5">
                         <CheckCircleIcon
                           className={clsx(
                             "w-4 h-4",
-                            selected === option.id ? "text-primary-06" : "text-neutral-05"
+                            selected === option.id ? "text-primary-06" : "text-neutral-08"
                           )}
                         />
                         <span className="text-xs text-neutral-07">{feature}</span>

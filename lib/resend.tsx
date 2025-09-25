@@ -74,7 +74,7 @@ This invitation link will expire in 7 days. If you have any questions, please do
 Best regards,
 ${adminName || 'The Ryse Team'}
 
-© 2024 Ryse. All rights reserved.
+© 2025 Ryse. All rights reserved.
 www.ryse.com
     `;
 
@@ -149,7 +149,7 @@ Questions? Contact ${pmName} at ${pmCompanyName} or reply to this email for supp
 Best regards,
 The Ryse Team
 
-© 2024 Ryse. All rights reserved.
+© 2025 Ryse. All rights reserved.
 www.ryse.com
     `;
 

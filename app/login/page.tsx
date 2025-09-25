@@ -4,12 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Card, CardBody } from "@heroui/card";
-import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
+import { Input } from "@heroui/input";
+import { Icon } from "@iconify/react";
 import Image from "next/image";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -38,106 +37,222 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-01 to-white">
-      <div className="w-full max-w-md px-4">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
+    <div className="flex min-h-screen">
+      {/* Left Panel - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-08 via-primary-07 to-primary-06 p-12 flex-col justify-between">
+        <div>
+          {/* Logo */}
+          <div className="mb-16">
             <Image
-              src="/ryse-logo-primary.svg"
+              src="/ryse-logo-white.svg"
               alt="Ryse"
               width={120}
-              height={48}
+              height={40}
+              className="h-10 w-auto"
             />
           </div>
-          <h1 className="text-2xl font-semibold text-neutral-08 mb-2">
-            Property Manager Portal
-          </h1>
-          <p className="text-sm text-neutral-06">
-            Sign in to manage your rent advances
-          </p>
+
+          {/* Hero Content */}
+          <div className="max-w-xl">
+            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-8 leading-[1.1] tracking-tight">
+              Advance your rent,{" "}
+              <span className="text-primary-01">accelerate your growth</span>
+            </h1>
+            <p className="text-xl text-white/90 mb-12 leading-relaxed">
+              Access up to 11 months of rent upfront. Instant liquidity for property managers.
+            </p>
+
+            {/* Feature List */}
+            <div className="space-y-5">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Icon icon="solar:check-circle-bold" className="text-white" width={20} />
+                </div>
+                <span className="text-white text-lg">Instant approval in minutes</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Icon icon="solar:check-circle-bold" className="text-white" width={20} />
+                </div>
+                <span className="text-white text-lg">Up to 11 months rent advance</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Icon icon="solar:check-circle-bold" className="text-white" width={20} />
+                </div>
+                <span className="text-white text-lg">2% flat commission rate</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Icon icon="solar:check-circle-bold" className="text-white" width={20} />
+                </div>
+                <span className="text-white text-lg">No credit checks required</span>
+              </div>
+            </div>
+
+            {/* Stats Pills */}
+            <div className="flex flex-wrap gap-3 mt-16">
+              <div className="bg-white/20 backdrop-blur-md px-5 py-3 rounded-xl border border-white/10">
+                <span className="text-white text-base font-semibold">$10M+ Advanced</span>
+              </div>
+              <div className="bg-white/20 backdrop-blur-md px-5 py-3 rounded-xl border border-white/10">
+                <span className="text-white text-base font-semibold">500+ Properties</span>
+              </div>
+              <div className="bg-white/20 backdrop-blur-md px-5 py-3 rounded-xl border border-white/10">
+                <span className="text-white text-base font-semibold">Fast Funding</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <Card className="border border-neutral-02">
-          <CardBody className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <Input
-                isRequired
-                label="Email"
-                labelPlacement="inside"
-                placeholder="Enter your email"
-                type="email"
-                value={email}
-                variant="bordered"
-                classNames={{
-                  inputWrapper: "border-1 border-neutral-03",
-                }}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+        {/* Footer */}
+        <div className="text-white/50 text-sm">
+          © 2025 Ryse. All rights reserved.
+        </div>
+      </div>
 
-              <Input
-                isRequired
-                label="Password"
-                labelPlacement="inside"
-                placeholder="Enter your password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                variant="bordered"
-                classNames={{
-                  inputWrapper: "border-1 border-neutral-03",
-                }}
-                endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="w-5 h-5 text-neutral-06" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5 text-neutral-06" />
-                    )}
-                  </button>
-                }
-                onChange={(e) => setPassword(e.target.value)}
-              />
+      {/* Right Panel - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="mb-8 lg:hidden">
+            <Image
+              src="/ryse-logo-white.svg"
+              alt="Ryse"
+              width={100}
+              height={32}
+              className="h-8 w-auto filter invert"
+            />
+          </div>
 
-              {error && (
-                <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
-                  {error}
-                </div>
-              )}
-
-              <Button
-                className="w-full bg-primary text-white"
-                color="primary"
-                size="lg"
-                type="submit"
-                isLoading={loading}
-              >
-                Sign In
-              </Button>
-            </form>
-
-            <div className="mt-6 text-center">
+          {/* Form Header */}
+          <div className="mb-10">
+            <h2 className="text-4xl font-bold text-neutral-09 mb-3">Welcome back</h2>
+            <div className="flex items-center gap-2">
+              <span className="text-neutral-06 text-base">New to Ryse?</span>
               <Link
                 href="/onboarding"
-                className="text-sm text-primary-06"
+                className="text-primary-06 font-semibold hover:text-primary-07 transition-colors flex items-center gap-1 text-base"
               >
-                New property manager? Start onboarding
+                Create account
+                <Icon icon="solar:arrow-right-linear" width={18} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <Input
+              isRequired
+              label="Email"
+              labelPlacement="inside"
+              placeholder="you@company.com"
+              type="email"
+              value={email}
+              variant="bordered"
+              classNames={{
+                inputWrapper: "border-1 border-neutral-03 hover:border-primary-06 focus-within:border-primary-06 h-14",
+                input: "text-base",
+              }}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Input
+              isRequired
+              label="Password"
+              labelPlacement="inside"
+              placeholder="Enter your password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              variant="bordered"
+              classNames={{
+                inputWrapper: "border-1 border-neutral-03 hover:border-primary-06 focus-within:border-primary-06 h-14",
+                input: "text-base",
+              }}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <Icon icon="solar:eye-closed-linear" className="w-5 h-5 text-neutral-06" />
+                  ) : (
+                    <Icon icon="solar:eye-linear" className="w-5 h-5 text-neutral-06" />
+                  )}
+                </button>
+              }
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {/* Forgot Password Link */}
+            <div className="flex justify-end">
+              <Link
+                href="#"
+                className="text-sm text-primary-06 font-medium hover:text-primary-07 transition-colors"
+              >
+                Forgot your password?
               </Link>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-neutral-02">
-              <p className="text-xs text-neutral-06 text-center">
-                Demo Credentials:
-                <br />
-                sarah.johnson@premierproperties.com / password123
-                <br />
-                michael.chen@urbanrealty.com / password123
-              </p>
+            {/* Error Message */}
+            {error && (
+              <div className="bg-danger-50 border border-danger-200 text-danger-700 px-4 py-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <div className="pt-4">
+              <Button
+                type="submit"
+                className="w-full bg-primary text-white"
+                color="primary"
+                size="lg"
+                isLoading={loading}
+                spinner={
+                  <svg
+                    className="animate-spin h-5 w-5 text-current"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                }
+              >
+                {loading ? "Signing in..." : "Sign in"}
+              </Button>
             </div>
-          </CardBody>
-        </Card>
+          </form>
+
+          {/* Footer Links */}
+          <div className="mt-8 flex justify-center gap-4 text-xs text-neutral-05">
+            <Link href="#" className="hover:text-neutral-07 transition-colors">
+              Terms of Service
+            </Link>
+            <span>•</span>
+            <Link href="#" className="hover:text-neutral-07 transition-colors">
+              Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link href="#" className="hover:text-neutral-07 transition-colors">
+              Contact Support
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

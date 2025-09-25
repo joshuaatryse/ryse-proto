@@ -865,3 +865,71 @@ export const getAdminInfo = query({
     }));
   },
 });
+
+// Get active advances for property manager (for Active Advances table)
+export const getActiveAdvancesByPropertyManager = query({
+  args: {
+    propertyManagerId: v.id("propertyManagers"),
+  },
+  handler: async (ctx, args) => {
+    // Get all advances for the property manager
+    const advances = await ctx.db
+      .query("advances")
+      .withIndex("by_property_manager", (q) => q.eq("propertyManagerId", args.propertyManagerId))
+      .collect();
+
+    // Filter for active advances (disbursed status)
+    const activeAdvances = advances.filter(a => a.status === "disbursed");
+
+    // Get property and owner details for each advance
+    const advancesWithDetails = await Promise.all(
+      activeAdvances.map(async (advance) => {
+        const property = await ctx.db.get(advance.propertyId);
+        const owner = await ctx.db.get(advance.ownerId);
+
+        return {
+          ...advance,
+          property,
+          owner,
+        };
+      })
+    );
+
+    // Sort by disbursedAt descending
+    return advancesWithDetails.sort((a, b) => (b.disbursedAt || 0) - (a.disbursedAt || 0));
+  },
+});
+
+// Get completed advances for property manager (for Completed Advances table)
+export const getCompletedAdvancesByPropertyManager = query({
+  args: {
+    propertyManagerId: v.id("propertyManagers"),
+  },
+  handler: async (ctx, args) => {
+    // Get all advances for the property manager
+    const advances = await ctx.db
+      .query("advances")
+      .withIndex("by_property_manager", (q) => q.eq("propertyManagerId", args.propertyManagerId))
+      .collect();
+
+    // Filter for completed advances (repaid status)
+    const completedAdvances = advances.filter(a => a.status === "repaid");
+
+    // Get property and owner details for each advance
+    const advancesWithDetails = await Promise.all(
+      completedAdvances.map(async (advance) => {
+        const property = await ctx.db.get(advance.propertyId);
+        const owner = await ctx.db.get(advance.ownerId);
+
+        return {
+          ...advance,
+          property,
+          owner,
+        };
+      })
+    );
+
+    // Sort by completedAt descending
+    return advancesWithDetails.sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0));
+  },
+});

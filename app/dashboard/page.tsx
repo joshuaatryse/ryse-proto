@@ -65,30 +65,54 @@ export default function PropertyManagerDashboard() {
     propertyManagerId ? { propertyManagerId: propertyManagerId as Id<"propertyManagers"> } : "skip"
   );
 
-  // Fetch advances
+  // Fetch all advances
   const advances = useQuery(
-    api.advances.getPropertyManagerAdvances,
-    propertyManagerId ? { propertyManagerId: propertyManagerId as Id<"propertyManagers"> } : "skip"
+    api.advances.getAdvancesByPropertyManager,
+    propertyManagerId ? {
+      propertyManagerId: propertyManagerId as Id<"propertyManagers">,
+      includeRepaid: true
+    } : "skip"
   );
 
   // Calculate metrics from real data
   const metrics = React.useMemo(() => {
     if (!propertyStats || !advances) return [];
 
-    // Calculate total commission from completed advances
+    // Calculate total commission from ALL disbursed and repaid advances
     const totalCommission = advances
-      ?.filter((a: any) => a.status === "repaid")
+      ?.filter((a: any) => a.status === "disbursed" || a.status === "repaid")
       ?.reduce((sum: number, a: any) => sum + (a.commissionAmount || 0), 0) || 0;
 
-    // Calculate available advances based on properties
-    const totalAdvanced = advances
-      ?.filter((a: any) => a.status === "disbursed" || a.status === "approved")
-      ?.reduce((sum: number, a: any) => sum + a.amount, 0) || 0;
+    // Calculate currently outstanding advances (only disbursed, not approved)
+    const totalOutstanding = advances
+      ?.filter((a: any) => a.status === "disbursed")
+      ?.reduce((sum: number, a: any) => sum + (a.remainingBalance || a.amount), 0) || 0;
 
-    // Only show credit if there are properties
+    // Calculate total potential advance capacity based on properties
+    // Assuming each property can get up to 11 months rent at 90% LTV
+    const totalPotentialAdvance = properties
+      ?.filter((p: any) => p.status === "accepted")
+      ?.reduce((sum: number, p: any) => {
+        const monthlyRent = p.monthlyRent || 0;
+        const maxAdvance = monthlyRent * 11 * 0.9; // 11 months at 90% LTV
+        return sum + maxAdvance;
+      }, 0) || 0;
+
+    // Available advances = total potential - currently outstanding
+    const availableCredit = Math.max(0, totalPotentialAdvance - totalOutstanding);
+
+    // Check if there are properties for display logic
     const hasProperties = propertyStats.total > 0;
-    const creditLimit = hasProperties ? 1250000 : 0; // Credit limit only available with properties
-    const availableCredit = creditLimit - totalAdvanced;
+
+    // Calculate active advance count
+    const activeAdvanceCount = advances?.filter((a: any) =>
+      a.status === "disbursed" || a.status === "approved"
+    ).length || 0;
+
+    // Calculate total monthly revenue from all accepted properties
+    const totalMonthlyRevenue = properties
+      ?.filter((p: any) => p.status === "accepted")
+      ?.reduce((sum: number, p: any) => sum + (p.monthlyRent || 0), 0) || 0;
 
     return [
       {
@@ -97,237 +121,126 @@ export default function PropertyManagerDashboard() {
         icon: "solar:home-2-bold",
         iconColor: "text-primary-05",
         bgColor: "bg-primary-01",
-        subtext: `${propertyStats.active || 0} active`,
+        subtext: `${propertyStats.accepted || 0} accepted`,
       },
       {
         label: "Available Advances",
-        value: hasProperties ? `$${availableCredit.toLocaleString()}` : "$0",
+        value: `$${Math.round(availableCredit).toLocaleString()}`,
         icon: "solar:wallet-money-bold",
         iconColor: "text-secondary-07",
         bgColor: "bg-secondary-01",
-        subtext: hasProperties ? `of $${creditLimit.toLocaleString()} limit` : "Add properties to unlock more",
+        subtext: hasProperties
+          ? `${activeAdvanceCount} active advances`
+          : "Add properties to unlock",
       },
       {
         label: "Total Commission",
-        value: `$${totalCommission.toLocaleString()}`,
+        value: `$${Math.round(totalCommission).toLocaleString()}`,
         icon: "solar:money-bag-bold",
         iconColor: "text-tertiary-05",
         bgColor: "bg-tertiary-01",
-        subtext: `From ${advances?.filter((a: any) => a.status === "repaid").length || 0} advances`,
+        subtext: `From ${advances?.filter((a: any) => a.status === "disbursed" || a.status === "repaid").length || 0} advances`,
       },
       {
         label: "Monthly Revenue",
-        value: `$${propertyStats?.totalMonthlyRent?.toLocaleString() || 0}`,
+        value: `$${Math.round(totalMonthlyRevenue).toLocaleString()}`,
         icon: "solar:chart-2-bold",
         iconColor: "text-quaternary-05",
         bgColor: "bg-quaternary-01",
-        subtext: `Avg: $${propertyStats?.averageRent?.toFixed(0) || 0}`,
+        subtext: `From ${properties?.filter((p: any) => p.status === "accepted").length || 0} properties`,
       },
     ];
-  }, [propertyStats, advances]);
+  }, [propertyStats, advances, properties]);
 
   // Get recent advances with property and owner details
   const activeAdvances = React.useMemo(() => {
-    // Mock data for development/visualization
-    const mockActiveAdvances = [
-      {
-        _id: "1",
-        propertyId: "prop1",
-        property: "Sunset Vista Apartments - Unit 204",
-        owner: "John Smith",
-        amount: 125000,
-        commissionAmount: 2500,
-        status: "disbursed",
-        requestedAt: new Date("2024-01-15").toISOString(),
-      },
-      {
-        _id: "2",
-        propertyId: "prop2",
-        property: "Oak Grove Residences - Unit 512",
-        owner: "Sarah Johnson",
-        amount: 87500,
-        commissionAmount: 1750,
-        status: "approved",
-        requestedAt: new Date("2024-01-18").toISOString(),
-      },
-      {
-        _id: "3",
-        propertyId: "prop3",
-        property: "Riverside Commons - Unit 301",
-        owner: "Michael Chen",
-        amount: 156000,
-        commissionAmount: 3120,
-        status: "disbursed",
-        requestedAt: new Date("2024-01-20").toISOString(),
-      },
-      {
-        _id: "4",
-        propertyId: "prop4",
-        property: "Pine Ridge Estates - Unit 105",
-        owner: "Emily Davis",
-        amount: 95000,
-        commissionAmount: 1900,
-        status: "disbursed",
-        requestedAt: new Date("2024-01-22").toISOString(),
-      },
-      {
-        _id: "5",
-        propertyId: "prop5",
-        property: "Harbor View Lofts - Unit 820",
-        owner: "Robert Wilson",
-        amount: 210000,
-        commissionAmount: 4200,
-        status: "approved",
-        requestedAt: new Date("2024-01-25").toISOString(),
-      },
-    ];
+    if (!advances) return [];
 
-    // Use real data if available, otherwise use mock data
-    if (!advances || !properties) return mockActiveAdvances;
-
+    // Filter and map active advances from real data
     const realData = advances
       .filter((a: any) => a.status === "approved" || a.status === "disbursed")
       .slice(0, 5) // Get first 5 active advances
       .map((advance: any) => {
-        const property = properties.find((p: any) => p._id === advance.propertyId);
+        // Build the full address string
+        const addressParts = [];
+        if (advance.property?.address?.street) addressParts.push(advance.property.address.street);
+        if (advance.property?.address?.unit) addressParts.push(`Unit ${advance.property.address.unit}`);
+        if (advance.property?.address?.city && advance.property?.address?.state) {
+          addressParts.push(`${advance.property.address.city}, ${advance.property.address.state}`);
+        }
+
+        const fullAddress = addressParts.join(', ') || advance.property?.address?.fullAddress || "Unknown Address";
+
         return {
           ...advance,
-          property: property?.propertyName || "Unknown Property",
-          owner: property?.owner?.name || "Unknown Owner",
-          address: property?.address?.fullAddress || "",
+          property: advance.property?.address?.street || advance.property?.propertyName || "Unknown Property",
+          owner: advance.owner?.name || "Unknown Owner",
+          address: fullAddress,
+          remainingBalance: advance.remainingBalance || advance.amount,
         };
       });
 
-    return realData.length > 0 ? realData : mockActiveAdvances;
-  }, [advances, properties]);
+    return realData;
+  }, [advances]);
 
   const completedAdvances = React.useMemo(() => {
-    // Mock data for development/visualization
-    const mockCompletedAdvances = [
-      {
-        _id: "6",
-        propertyId: "prop6",
-        property: "Maple Court Townhomes - Unit 12",
-        owner: "Jennifer Martinez",
-        amount: 145000,
-        commissionAmount: 2900,
-        status: "repaid",
-        requestedAt: new Date("2023-11-10").toISOString(),
-        repaidAt: new Date("2023-12-10").toISOString(),
-      },
-      {
-        _id: "7",
-        propertyId: "prop7",
-        property: "Crystal Lake Villas - Unit 408",
-        owner: "David Thompson",
-        amount: 178000,
-        commissionAmount: 3560,
-        status: "repaid",
-        requestedAt: new Date("2023-11-15").toISOString(),
-        repaidAt: new Date("2023-12-15").toISOString(),
-      },
-      {
-        _id: "8",
-        propertyId: "prop8",
-        property: "Westside Gardens - Unit 706",
-        owner: "Lisa Anderson",
-        amount: 92000,
-        commissionAmount: 1840,
-        status: "repaid",
-        requestedAt: new Date("2023-12-01").toISOString(),
-        repaidAt: new Date("2024-01-01").toISOString(),
-      },
-      {
-        _id: "9",
-        propertyId: "prop9",
-        property: "Horizon Heights - Unit 215",
-        owner: "Thomas Brown",
-        amount: 230000,
-        commissionAmount: 4600,
-        status: "repaid",
-        requestedAt: new Date("2023-12-05").toISOString(),
-        repaidAt: new Date("2024-01-05").toISOString(),
-      },
-      {
-        _id: "10",
-        propertyId: "prop10",
-        property: "Park Plaza Residences - Unit 909",
-        owner: "Amanda White",
-        amount: 165000,
-        commissionAmount: 3300,
-        status: "repaid",
-        requestedAt: new Date("2023-12-20").toISOString(),
-        repaidAt: new Date("2024-01-20").toISOString(),
-      },
-    ];
+    if (!advances) return [];
 
-    // Use real data if available, otherwise use mock data
-    if (!advances || !properties) return mockCompletedAdvances;
-
+    // Filter and map completed advances from real data
     const realData = advances
       .filter((a: any) => a.status === "repaid")
       .slice(0, 5) // Get first 5 completed advances
       .map((advance: any) => {
-        const property = properties.find((p: any) => p._id === advance.propertyId);
         return {
           ...advance,
-          property: property?.propertyName || "Unknown Property",
-          owner: property?.owner?.name || "Unknown Owner",
-          address: property?.address?.fullAddress || "",
+          property: advance.property?.address?.street || advance.property?.propertyName || "Unknown Property",
+          owner: advance.owner?.name || "Unknown Owner",
+          address: advance.property?.address?.fullAddress || "",
+          repaidAt: advance.completedAt || advance.updatedAt,
         };
       });
 
-    return realData.length > 0 ? realData : mockCompletedAdvances;
-  }, [advances, properties]);
+    return realData;
+  }, [advances]);
 
   // Calculate active advances metrics
   const activeMetrics = React.useMemo(() => {
-    // Mock metrics for visualization
-    const mockMetrics = {
-      activeCount: 5,
-      amountFunded: 673500,
-      amountCollected: 810000,
-      outstanding: 376000,
-      commissionsEarned: 16200,
-      commissionsPending: 7520
+    if (!advances) return {
+      activeCount: 0,
+      amountFunded: 0,
+      amountCollected: 0,
+      outstanding: 0,
+      commissionsEarned: 0,
+      commissionsPending: 0
     };
 
-    if (!advances) return mockMetrics;
-
-    const realMetrics = {
+    return {
       activeCount: advances.filter((a: any) => a.status === "approved" || a.status === "disbursed").length,
       amountFunded: advances.filter((a: any) => a.status === "disbursed" || a.status === "repaid")
         .reduce((sum: number, a: any) => sum + a.amount, 0),
       amountCollected: advances.filter((a: any) => a.status === "repaid")
         .reduce((sum: number, a: any) => sum + a.amount, 0),
       outstanding: advances.filter((a: any) => a.status === "disbursed")
-        .reduce((sum: number, a: any) => sum + a.amount, 0),
+        .reduce((sum: number, a: any) => sum + (a.remainingBalance || a.amount), 0),
       commissionsEarned: advances.filter((a: any) => a.status === "repaid")
         .reduce((sum: number, a: any) => sum + (a.commissionAmount || 0), 0),
       commissionsPending: advances.filter((a: any) => a.status === "disbursed")
         .reduce((sum: number, a: any) => sum + (a.commissionAmount || 0), 0)
     };
-
-    return realMetrics.activeCount > 0 ? realMetrics : mockMetrics;
   }, [advances]);
 
   // Calculate completed advances metrics
   const completedMetrics = React.useMemo(() => {
-    // Mock metrics for visualization
-    const mockMetrics = {
-      totalCount: 5,
-      totalCommissions: 16200
+    if (!advances) return {
+      totalCount: 0,
+      totalCommissions: 0
     };
 
-    if (!advances) return mockMetrics;
-
     const repaidAdvances = advances.filter((a: any) => a.status === "repaid");
-    const realMetrics = {
+    return {
       totalCount: repaidAdvances.length,
       totalCommissions: repaidAdvances.reduce((sum: number, a: any) => sum + (a.commissionAmount || 0), 0)
     };
-
-    return realMetrics.totalCount > 0 ? realMetrics : mockMetrics;
   }, [advances]);
 
   // Handle advance request
@@ -517,29 +430,25 @@ export default function PropertyManagerDashboard() {
               ) : (
                 <Table aria-label="Active advances" removeWrapper>
                   <TableHeader>
-                    <TableColumn width="35%">Property</TableColumn>
-                    <TableColumn width="20%">Owner</TableColumn>
-                    <TableColumn width="15%">Amount</TableColumn>
-                    <TableColumn width="15%">Status</TableColumn>
-                    <TableColumn width="15%">Date</TableColumn>
+                    <TableColumn width="40%">Address</TableColumn>
+                    <TableColumn width="25%">Owner</TableColumn>
+                    <TableColumn width="20%">Remaining</TableColumn>
+                    <TableColumn width="15%">Commission</TableColumn>
                   </TableHeader>
                   <TableBody>
                     {activeAdvances.map((advance: any) => (
                       <TableRow key={advance._id} className="h-[52px]">
                         <TableCell className="py-2">
                           <div className="max-w-xs truncate">
-                            {advance.property}
+                            {advance.address || advance.property}
                           </div>
                         </TableCell>
                         <TableCell className="py-2">{advance.owner}</TableCell>
                         <TableCell className="py-2 font-medium">
-                          ${advance.amount.toLocaleString()}
+                          ${(advance.remainingBalance || advance.amount).toLocaleString()}
                         </TableCell>
-                        <TableCell className="py-2">
-                          <StatusBadge status={advance.status} />
-                        </TableCell>
-                        <TableCell className="py-2">
-                          {new Date(advance.requestedAt).toLocaleDateString()}
+                        <TableCell className="py-2 font-medium">
+                          ${(advance.commissionAmount || 0).toLocaleString()}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -551,17 +460,17 @@ export default function PropertyManagerDashboard() {
               <div className="px-6 py-4 bg-neutral-01 border-t border-neutral-02">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <Icon icon="solar:chart-square-bold" className="text-primary-06" />
-                      <span className="text-sm text-neutral-07">
-                        <span className="font-semibold">{activeMetrics.activeCount}</span> Active
+                    <div className="flex items-center gap-3">
+                      <Icon icon="solar:chart-square-bold" className="text-primary-06" width={24} height={24} />
+                      <span className="text-base text-neutral-07">
+                        <span className="font-semibold text-lg">{activeMetrics.activeCount}</span> Active Advances
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-neutral-06 uppercase tracking-wide mb-1">Outstanding</div>
+                    <div className="text-xs text-neutral-07 uppercase tracking-wide mb-1">Outstanding</div>
                     <div className="text-lg font-semibold text-neutral-09">
-                      ${activeMetrics.outstanding.toLocaleString()}
+                      ${Math.round(activeMetrics.outstanding).toLocaleString()}
                     </div>
                   </div>
                 </div>
@@ -629,17 +538,17 @@ export default function PropertyManagerDashboard() {
               <div className="px-6 py-4 bg-success-50 border-t border-neutral-02">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <Icon icon="solar:check-circle-bold" className="text-success-600" />
-                      <span className="text-sm text-neutral-07">
-                        <span className="font-semibold">{completedMetrics.totalCount}</span> Completed
+                    <div className="flex items-center gap-3">
+                      <Icon icon="solar:check-circle-bold" className="text-success-600" width={24} height={24} />
+                      <span className="text-base text-neutral-07">
+                        <span className="font-semibold text-lg">{completedMetrics.totalCount}</span> Completed Advances
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-neutral-06 uppercase tracking-wide mb-1">Total Commissions</div>
+                    <div className="text-xs text-success-700 uppercase tracking-wide mb-1">Total Commissions</div>
                     <div className="text-lg font-semibold text-success-700">
-                      ${completedMetrics.totalCommissions.toLocaleString()}
+                      ${Math.round(completedMetrics.totalCommissions).toLocaleString()}
                     </div>
                   </div>
                 </div>

@@ -188,7 +188,7 @@ export default function MarketingPage() {
 
         {/* Email Footer */}
         <div className="bg-gray-100 p-4 text-center text-xs text-gray-600">
-          <p>© 2024 {branding.companyName || user.company}. All rights reserved.</p>
+          <p>© 2025 {branding.companyName || user.company}. All rights reserved.</p>
           <p className="mt-2">
             <a href="#" className="text-blue-600 hover:underline">Unsubscribe</a> |
             <a href="#" className="text-blue-600 hover:underline ml-2">Update Preferences</a>

@@ -62,7 +62,7 @@ export default function TermsForm({ initialAccepted, onNext, onBack }: TermsForm
           </div>
 
           <div className="pt-4 border-t border-neutral-02">
-            <p className="text-xs text-neutral-06">
+            <p className="text-xs text-neutral-08">
               By accepting, you agree to the full{" "}
               <Link href="#" size="sm" className="text-primary-06">
                 Terms of Service

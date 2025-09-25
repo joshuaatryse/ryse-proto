@@ -7,7 +7,7 @@ export const EmailFooter: React.FC = () => {
       <Hr style={divider} />
 
       <Text style={footerText}>
-        © 2024 Ryse. All rights reserved.
+        © 2025 Ryse. All rights reserved.
       </Text>
 
       <Text style={footerLinks}>
