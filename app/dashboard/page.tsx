@@ -281,7 +281,8 @@ export default function PropertyManagerDashboard() {
           <Button
             className="bg-primary text-white"
             startContent={<Icon icon="solar:add-circle-bold" />}
-            onPress={onOpen}
+            as="a"
+            href="/advances/request"
           >
             Request Advance
           </Button>
@@ -557,53 +558,6 @@ export default function PropertyManagerDashboard() {
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <Card className="border border-neutral-02">
-          <CardHeader className="px-6 py-4 border-b border-neutral-02">
-            <h2 className="text-lg font-semibold">Quick Actions</h2>
-          </CardHeader>
-          <CardBody className="p-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <Button
-                className="justify-start hover:bg-primary-01 hover:text-primary"
-                variant="flat"
-                startContent={<Icon icon="solar:home-add-linear" />}
-                as="a"
-                href="/advances"
-              >
-                Add New Property
-              </Button>
-              <Button
-                className="justify-start hover:bg-primary-01 hover:text-primary"
-                variant="flat"
-                startContent={<Icon icon="solar:user-plus-linear" />}
-                as="a"
-                href="/owners"
-              >
-                Add Property Owner
-              </Button>
-              <Button
-                className="justify-start hover:bg-primary-01 hover:text-primary"
-                variant="flat"
-                startContent={<Icon icon="solar:chart-square-linear" />}
-                as="a"
-                href="/insights"
-              >
-                View Analytics
-              </Button>
-              <Button
-                className="justify-start hover:bg-primary-01 hover:text-primary"
-                variant="flat"
-                startContent={<Icon icon="solar:letter-linear" />}
-                as="a"
-                href="/marketing"
-              >
-                Send Campaign
-              </Button>
-            </div>
-          </CardBody>
-        </Card>
-
         {/* Property Overview */}
         <Card className="border border-neutral-02">
           <CardHeader className="px-6 py-4 border-b border-neutral-02">
@@ -658,6 +612,53 @@ export default function PropertyManagerDashboard() {
                   <p className="text-lg font-semibold">{propertyStats?.accepted || 0}</p>
                 </div>
               </div>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card className="border border-neutral-02">
+          <CardHeader className="px-6 py-4 border-b border-neutral-02">
+            <h2 className="text-lg font-semibold">Quick Actions</h2>
+          </CardHeader>
+          <CardBody className="p-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <Button
+                className="justify-start hover:bg-primary-01 hover:text-primary"
+                variant="flat"
+                startContent={<Icon icon="solar:home-add-linear" />}
+                as="a"
+                href="/advances"
+              >
+                Add New Property
+              </Button>
+              <Button
+                className="justify-start hover:bg-primary-01 hover:text-primary"
+                variant="flat"
+                startContent={<Icon icon="solar:user-plus-linear" />}
+                as="a"
+                href="/owners"
+              >
+                Add Property Owner
+              </Button>
+              <Button
+                className="justify-start hover:bg-primary-01 hover:text-primary"
+                variant="flat"
+                startContent={<Icon icon="solar:chart-square-linear" />}
+                as="a"
+                href="/insights"
+              >
+                View Analytics
+              </Button>
+              <Button
+                className="justify-start hover:bg-primary-01 hover:text-primary"
+                variant="flat"
+                startContent={<Icon icon="solar:letter-linear" />}
+                as="a"
+                href="/marketing"
+              >
+                Send Campaign
+              </Button>
             </div>
           </CardBody>
         </Card>
