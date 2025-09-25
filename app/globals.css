@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Remove default focus rings globally */
+@layer base {
+  input:focus,
+  textarea:focus,
+  select:focus,
+  button:focus {
+    outline: none;
+  }
+}
+
 /* Animations for Welcome Cards */
 @keyframes fade-in {
   from {

@@ -151,8 +151,8 @@ export default function LoginPage() {
               value={email}
               variant="bordered"
               classNames={{
-                inputWrapper: "border-1 border-neutral-03 hover:border-primary-06 focus-within:border-primary-06 h-14",
-                input: "text-base",
+                inputWrapper: "border-1 border-neutral-03 hover:border-primary-06 focus-within:border-primary-06 h-14 data-[focus=true]:ring-0 data-[focus=true]:ring-offset-0",
+                input: "text-base focus:outline-none",
               }}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -166,8 +166,8 @@ export default function LoginPage() {
               value={password}
               variant="bordered"
               classNames={{
-                inputWrapper: "border-1 border-neutral-03 hover:border-primary-06 focus-within:border-primary-06 h-14",
-                input: "text-base",
+                inputWrapper: "border-1 border-neutral-03 hover:border-primary-06 focus-within:border-primary-06 h-14 data-[focus=true]:ring-0 data-[focus=true]:ring-offset-0",
+                input: "text-base focus:outline-none",
               }}
               endContent={
                 <button
