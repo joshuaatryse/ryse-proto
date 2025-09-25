@@ -353,7 +353,7 @@ AdvanceOwnerResponseEmail.PreviewProps = {
       monthlyRent: 2800,
     },
   ],
-  reviewLink: 'https://ryse.com/advances/review/abc123',
+  reviewLink: 'https://ryse-demo.vercel.app/advances/review/abc123',
 } as AdvanceOwnerResponseEmailProps;
 
 export default AdvanceOwnerResponseEmail;

@@ -69,13 +69,13 @@ What happens next?
 2. Add your properties: Import or manually add the properties you manage
 3. Offer advance rent: Start offering your property owners the option to receive advance rent payments
 
-This invitation link will expire in 7 days. If you have any questions, please don't hesitate to reach out to our support team at support@ryse.com.
+This invitation link will expire in 7 days. If you have any questions, please don't hesitate to reach out to our support team at support@rysemarket.com.
 
 Best regards,
 ${adminName || 'The Ryse Team'}
 
 © 2025 Ryse. All rights reserved.
-www.ryse.com
+ryse-demo.vercel.app
     `;
 
     const result = await resend.emails.send({
@@ -150,7 +150,7 @@ Best regards,
 The Ryse Team
 
 © 2025 Ryse. All rights reserved.
-www.ryse.com
+ryse-demo.vercel.app
     `;
 
     const result = await resend.emails.send({

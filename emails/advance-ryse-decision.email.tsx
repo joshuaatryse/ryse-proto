@@ -234,7 +234,7 @@ export const AdvanceRyseDecisionEmail: React.FC<AdvanceRyseDecisionEmailProps> =
               <strong>Alternative options:</strong> You may submit a new advance request with different terms
             </Text>
             <Text style={listItem}>
-              <strong>Questions?</strong> Contact us at support@ryse.com
+              <strong>Questions?</strong> Contact us at support@rysemarket.com
             </Text>
           </>
         )}
@@ -303,7 +303,7 @@ export const AdvanceRyseDecisionEmail: React.FC<AdvanceRyseDecisionEmailProps> =
         <Text style={signature}>
           {recipientType === 'owner'
             ? `Questions? Contact your property manager at ${pmCompanyName} for support.`
-            : 'Questions? Contact us at support@ryse.com or call 1-800-RYSE-NOW'
+            : 'Questions? Contact us at support@rysemarket.com or call 1-800-RYSE-NOW'
           }
         </Text>
 
@@ -381,7 +381,7 @@ AdvanceRyseDecisionEmail.PreviewProps = {
     },
   ],
   disbursementDate: 'December 20, 2024',
-  portalLink: 'https://ryse.com/owner/advances',
+  portalLink: 'https://ryse-demo.vercel.app/owner/advances',
 } as AdvanceRyseDecisionEmailProps;
 
 export default AdvanceRyseDecisionEmail;

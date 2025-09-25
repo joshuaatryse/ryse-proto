@@ -368,7 +368,7 @@ AdvanceRequestEmail.PreviewProps = {
   requestedAmount: 45000,
   termMonths: 8,
   monthlyPayment: 6300,
-  invitationLink: 'https://ryse.com/owner/advance-invite?token=abc123xyz',
+  invitationLink: 'https://ryse-demo.vercel.app/owner/advance-invite?token=abc123xyz',
   expiresInDays: 7,
 } as AdvanceRequestEmailProps;
 

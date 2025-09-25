@@ -284,7 +284,7 @@ export default function PropertyManagerDashboard() {
             as="a"
             href="/advances/request"
           >
-            Request Advance
+            Send Advance Request
           </Button>
         </div>
 

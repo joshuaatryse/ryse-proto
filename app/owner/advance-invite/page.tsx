@@ -286,7 +286,7 @@ function OwnerAdvanceInviteContent() {
         })) || [];
 
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL ||
-                       (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ryse.com');
+                       (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ryse-demo.vercel.app');
 
         // Send email to PM
         if (advanceRequest.propertyManager?.email) {

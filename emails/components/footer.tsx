@@ -15,15 +15,15 @@ export const EmailFooter: React.FC<EmailFooterProps> = ({ isPMBranded = false })
       </Text>
 
       <Text style={footerLinks}>
-        <Link href={isPMBranded ? "https://nomadlease.com" : "https://ryse.com"} style={link}>
+        <Link href={isPMBranded ? "https://nomadlease.com" : "https://ryse-demo.vercel.app"} style={link}>
           Visit our website
         </Link>
         {' • '}
-        <Link href={isPMBranded ? "https://nomadlease.com/privacy" : "https://ryse.com/privacy"} style={link}>
+        <Link href={isPMBranded ? "https://nomadlease.com/privacy" : "https://ryse-demo.vercel.app/privacy"} style={link}>
           Privacy Policy
         </Link>
         {' • '}
-        <Link href={isPMBranded ? "https://nomadlease.com/terms" : "https://ryse.com/terms"} style={link}>
+        <Link href={isPMBranded ? "https://nomadlease.com/terms" : "https://ryse-demo.vercel.app/terms"} style={link}>
           Terms of Service
         </Link>
       </Text>

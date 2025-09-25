@@ -103,9 +103,9 @@ export default function OnboardingSidebar({
           <button
             type="button"
             className="text-sm text-white/80 hover:text-white px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-200"
-            onClick={() => window.location.href = 'mailto:support@ryse.com'}
+            onClick={() => window.location.href = 'mailto:support@rysemarket.com'}
           >
-            Need help? Contact support@ryse.com
+            Need help? Contact support@rysemarket.com
           </button>
         </div>
       </div>

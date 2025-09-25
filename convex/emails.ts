@@ -52,7 +52,7 @@ export const sendAdvanceOwnerResponseEmail = internalAction({
       };
 
       const result = await resend.emails.send({
-        from: "Ryse <notifications@ryse.com>",
+        from: "Ryse <notifications@rysemarket.com>",
         to: args.recipientEmail,
         subject: `${getResponseTitle()} - ${args.ownerName}`,
         html: emailHtml,
@@ -103,7 +103,7 @@ export const sendAdvanceRyseDecisionEmail = internalAction({
       const emailHtml = await render(AdvanceRyseDecisionEmail(args));
 
       const result = await resend.emails.send({
-        from: "Ryse <notifications@ryse.com>",
+        from: "Ryse <notifications@rysemarket.com>",
         to: args.recipientEmail,
         subject: `Advance ${args.decision === "approved" ? "Approved" : "Denied"} - $${args.amount.toLocaleString()}`,
         html: emailHtml,
@@ -155,7 +155,7 @@ export const sendAdvanceRequestEmail = internalAction({
       const emailHtml = await render(AdvanceRequestEmail(args));
 
       const result = await resend.emails.send({
-        from: "Ryse <notifications@ryse.com>",
+        from: "Ryse <notifications@rysemarket.com>",
         to: args.recipientEmail,
         subject: `Rent Advance Offer from ${args.pmCompanyName}`,
         html: emailHtml,

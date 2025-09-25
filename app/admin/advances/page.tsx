@@ -12,7 +12,7 @@ export default function AdminAdvancesPage() {
 
   // Mock user data - in production, this would come from auth
   const mockUser = {
-    email: "sean.mitchell@ryse.com",
+    email: "sean.mitchell@rysemarket.com",
     firstName: "Sean",
     lastName: "Mitchell",
     role: "Admin",

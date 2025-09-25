@@ -72,7 +72,7 @@ export default function AdvanceRequestsCard() {
 
       // Send approval emails
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL ||
-                     (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ryse.com');
+                     (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ryse-demo.vercel.app');
       const disbursementDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toLocaleDateString();
 
       const finalAmount = selectedRequest.advances.reduce((sum, adv) => {
@@ -173,7 +173,7 @@ export default function AdvanceRequestsCard() {
 
       // Send rejection emails
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL ||
-                     (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ryse.com');
+                     (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ryse-demo.vercel.app');
 
       const totalAmount = selectedRequest.advances.reduce((sum, adv) => sum + adv.amount, 0);
 

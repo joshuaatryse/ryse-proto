@@ -84,7 +84,7 @@ export const InvitationEmail: React.FC<InvitationEmailProps> = ({
 
         <Text style={note}>
           This invitation link will expire in <strong>{expiresInDays} days</strong>.
-          If you have any questions, please don't hesitate to reach out to our support team at support@ryse.com.
+          If you have any questions, please don't hesitate to reach out to our support team at support@rysemarket.com.
         </Text>
 
         <Text style={signature}>
@@ -158,7 +158,7 @@ InvitationEmail.PreviewProps = {
   firstName: 'Sarah',
   lastName: 'Johnson',
   companyName: 'Premier Property Management',
-  invitationLink: 'https://ryse.com/onboarding?token=abc123',
+  invitationLink: 'https://ryse-demo.vercel.app/onboarding?token=abc123',
   adminName: 'Sean Mitchell',
   expiresInDays: 7,
 } as InvitationEmailProps;

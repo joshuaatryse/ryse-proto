@@ -36,7 +36,7 @@ export default function AdminDashboard() {
 
   // Mock user data
   const mockUser = {
-    email: "sean.mitchell@ryse.com",
+    email: "sean.mitchell@rysemarket.com",
     firstName: "Sean",
     lastName: "Mitchell",
     role: "Admin",
