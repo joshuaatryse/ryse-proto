@@ -2,8 +2,66 @@ import { v } from "convex/values";
 import { mutation } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
 
-// Property addresses from reference - ALL 96 properties
-const propertyAddresses = [
+// Generate 500 properties across multiple cities
+function generateAddresses(count: number = 500) {
+  const cities = [
+    { city: "Charlotte", state: "NC", zipCode: "28214" },
+    { city: "Charlotte", state: "NC", zipCode: "28216" },
+    { city: "Durham", state: "NC", zipCode: "27701" },
+    { city: "Durham", state: "NC", zipCode: "27705" },
+    { city: "Durham", state: "NC", zipCode: "27707" },
+    { city: "Durham", state: "NC", zipCode: "27713" },
+    { city: "Raleigh", state: "NC", zipCode: "27612" },
+    { city: "Raleigh", state: "NC", zipCode: "27613" },
+    { city: "Raleigh", state: "NC", zipCode: "27617" },
+    { city: "Cary", state: "NC", zipCode: "27519" },
+    { city: "Chapel Hill", state: "NC", zipCode: "27514" },
+    { city: "Chapel Hill", state: "NC", zipCode: "27516" },
+    { city: "Chapel Hill", state: "NC", zipCode: "27517" },
+    { city: "Hendersonville", state: "NC", zipCode: "28792" },
+    { city: "Lake Lure", state: "NC", zipCode: "28746" },
+    { city: "Tryon", state: "NC", zipCode: "28782" },
+    { city: "Mill Spring", state: "NC", zipCode: "28756" },
+    { city: "Gerton", state: "NC", zipCode: "28735" },
+    { city: "Union Mills", state: "NC", zipCode: "28167" },
+    { city: "Zirconia", state: "NC", zipCode: "28790" },
+    { city: "Pittsboro", state: "NC", zipCode: "27312" }
+  ];
+
+  const streetNames = [
+    "Oak", "Main", "Park", "Cedar", "Maple", "Washington", "Elm", "Pine",
+    "Lake", "Hill", "Forest", "Valley", "Sunset", "Spring", "River", "Meadow",
+    "Highland", "Willow", "Ridge", "Mountain", "Creek", "Church", "North", "South",
+    "Eagle", "Hawk", "Falcon", "Bear", "Deer", "Fox", "Wolf", "Birch",
+    "Cherry", "Holly", "Laurel", "Rose", "Jasmine", "Violet", "Magnolia", "Poplar"
+  ];
+
+  const streetTypes = [
+    "Street", "Avenue", "Drive", "Road", "Lane", "Way", "Court", "Circle",
+    "Place", "Trail", "Parkway", "Boulevard", "Terrace", "Loop", "Path"
+  ];
+
+  const addresses = [];
+
+  for (let i = 0; i < count; i++) {
+    const cityInfo = cities[Math.floor(Math.random() * cities.length)];
+    const streetNum = Math.floor(Math.random() * 9900) + 100;
+    const streetName = streetNames[Math.floor(Math.random() * streetNames.length)];
+    const streetType = streetTypes[Math.floor(Math.random() * streetTypes.length)];
+
+    addresses.push({
+      city: cityInfo.city,
+      state: cityInfo.state,
+      street: `${streetNum} ${streetName} ${streetType}`,
+      zipCode: cityInfo.zipCode
+    });
+  }
+
+  return addresses;
+}
+
+// Property addresses from reference - ALL 96 properties (kept as fallback)
+const fallbackPropertyAddresses = [
   { city: "Lake Lure", state: "NC", street: "Bobcats Trail", zipCode: "28746" },
   { city: "Mill Spring", state: "NC", street: "479 Camp Hill Road", zipCode: "28756" },
   { city: "Hendersonville", state: "NC", street: "135 Middle Street", zipCode: "28792" },
@@ -101,39 +159,51 @@ const propertyAddresses = [
   { city: "Durham", state: "NC", street: "813 North Mangum Street", zipCode: "27701" },
 ];
 
-// Owner names pool for random selection (expanded for 96 properties)
-const ownerNames = [
-  { name: "Robert Williams", email: "robert.williams@email.com", phone: "(555) 111-2222" },
-  { name: "Jennifer Martinez", email: "j.martinez@email.com", phone: "(555) 111-3333" },
-  { name: "David Thompson", email: "dthompson@email.com", phone: "(555) 111-4444" },
-  { name: "Lisa Anderson", email: "lisa.anderson@email.com", phone: "(555) 111-5555" },
-  { name: "Michael Brown", email: "michael.brown@email.com", phone: "(555) 111-6666" },
-  { name: "Sarah Davis", email: "sarah.davis@email.com", phone: "(555) 111-7777" },
-  { name: "James Wilson", email: "james.wilson@email.com", phone: "(555) 111-8888" },
-  { name: "Emily Garcia", email: "emily.garcia@email.com", phone: "(555) 111-9999" },
-  { name: "Christopher Lee", email: "chris.lee@email.com", phone: "(555) 222-1111" },
-  { name: "Patricia Taylor", email: "patricia.taylor@email.com", phone: "(555) 222-2222" },
-  { name: "Daniel Moore", email: "daniel.moore@email.com", phone: "(555) 222-3333" },
-  { name: "Michelle Jackson", email: "michelle.jackson@email.com", phone: "(555) 222-4444" },
-  { name: "Kevin Rodriguez", email: "kevin.rodriguez@email.com", phone: "(555) 222-5555" },
-  { name: "Nancy Walker", email: "nancy.walker@email.com", phone: "(555) 222-6666" },
-  { name: "Brian Hall", email: "brian.hall@email.com", phone: "(555) 222-7777" },
-  { name: "Amanda Lewis", email: "amanda.lewis@email.com", phone: "(555) 222-8888" },
-  { name: "Jason Young", email: "jason.young@email.com", phone: "(555) 333-1111" },
-  { name: "Melissa King", email: "melissa.king@email.com", phone: "(555) 333-2222" },
-  { name: "Ryan Wright", email: "ryan.wright@email.com", phone: "(555) 333-3333" },
-  { name: "Jessica Lopez", email: "jessica.lopez@email.com", phone: "(555) 333-4444" },
-  { name: "Andrew Hill", email: "andrew.hill@email.com", phone: "(555) 333-5555" },
-  { name: "Stephanie Scott", email: "stephanie.scott@email.com", phone: "(555) 333-6666" },
-  { name: "Timothy Green", email: "timothy.green@email.com", phone: "(555) 333-7777" },
-  { name: "Rachel Adams", email: "rachel.adams@email.com", phone: "(555) 333-8888" },
-  { name: "Eric Baker", email: "eric.baker@email.com", phone: "(555) 444-1111" },
-  { name: "Laura Nelson", email: "laura.nelson@email.com", phone: "(555) 444-2222" },
-  { name: "Mark Carter", email: "mark.carter@email.com", phone: "(555) 444-3333" },
-  { name: "Karen Mitchell", email: "karen.mitchell@email.com", phone: "(555) 444-4444" },
-  { name: "Steven Perez", email: "steven.perez@email.com", phone: "(555) 444-5555" },
-  { name: "Elizabeth Roberts", email: "elizabeth.roberts@email.com", phone: "(555) 444-6666" },
-];
+// Owner name generation for 500 properties
+function generateOwners(count: number = 150) {
+  const firstNames = [
+    "Robert", "Jennifer", "David", "Lisa", "Michael", "Sarah", "James", "Emily",
+    "Christopher", "Patricia", "Daniel", "Michelle", "Kevin", "Nancy", "Brian", "Amanda",
+    "Jason", "Melissa", "Ryan", "Jessica", "Andrew", "Stephanie", "Timothy", "Rachel",
+    "Eric", "Laura", "Mark", "Karen", "Steven", "Elizabeth", "Joseph", "Maria",
+    "Charles", "Susan", "Thomas", "Dorothy", "Richard", "Helen", "Kenneth", "Betty",
+    "George", "Sandra", "Edward", "Donna", "Paul", "Carol", "Frank", "Ruth",
+    "Larry", "Sharon", "Raymond", "Michelle", "Gregory", "Laura", "Joshua", "Sarah",
+    "Dennis", "Kimberly", "Jerry", "Deborah", "Jose", "Jessica", "Matthew", "Shirley",
+    "Gary", "Cynthia", "Timothy", "Angela", "Nicholas", "Melissa", "Ronald", "Brenda"
+  ];
+
+  const lastNames = [
+    "Williams", "Martinez", "Thompson", "Anderson", "Brown", "Davis", "Wilson", "Garcia",
+    "Lee", "Taylor", "Moore", "Jackson", "Rodriguez", "Walker", "Hall", "Lewis",
+    "Young", "King", "Wright", "Lopez", "Hill", "Scott", "Green", "Adams",
+    "Baker", "Nelson", "Carter", "Mitchell", "Perez", "Roberts", "Turner", "Phillips",
+    "Campbell", "Parker", "Evans", "Edwards", "Collins", "Stewart", "Sanchez", "Morris",
+    "Rogers", "Reed", "Cook", "Morgan", "Bell", "Murphy", "Bailey", "Rivera",
+    "Cooper", "Richardson", "Cox", "Howard", "Ward", "Torres", "Peterson", "Gray",
+    "Ramirez", "James", "Watson", "Brooks", "Kelly", "Sanders", "Price", "Bennett"
+  ];
+
+  const owners = [];
+  const usedEmails = new Set();
+
+  while (owners.length < count) {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${owners.length}@email.com`;
+
+    if (!usedEmails.has(email)) {
+      usedEmails.add(email);
+      owners.push({
+        name: `${firstName} ${lastName}`,
+        email: email,
+        phone: `(555) ${String(Math.floor(Math.random() * 900) + 100).padStart(3, '0')}-${String(Math.floor(Math.random() * 9000) + 1000).padStart(4, '0')}`
+      });
+    }
+  }
+
+  return owners;
+}
 
 // Property types distribution
 const propertyTypes = ["single_family", "condo", "townhouse", "multi_family", "apartment"] as const;
@@ -248,13 +318,17 @@ export const syncProperties = mutation({
       throw new Error("Property manager not found");
     }
 
+    // Generate 500 property addresses and 150 owners
+    const propertyAddresses = generateAddresses(500);
+    const ownerNames = generateOwners(150);
+
     // Get or create owners (group properties by owner)
     const ownersMap = new Map<string, Id<"owners">>();
-    const propertiesPerOwner = 3; // Each owner will have 2-3 properties
+    const propertiesPerOwner = Math.ceil(500 / 150); // ~3-4 properties per owner
 
     // Create or get owners
-    for (let i = 0; i < Math.ceil(propertyAddresses.length / propertiesPerOwner); i++) {
-      const ownerData = ownerNames[i % ownerNames.length];
+    for (let i = 0; i < ownerNames.length; i++) {
+      const ownerData = ownerNames[i];
 
       // Check if owner already exists
       const existingOwner = await ctx.db

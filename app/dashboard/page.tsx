@@ -142,7 +142,7 @@ export default function PropertyManagerDashboard() {
         subtext: `From ${advances?.filter((a: any) => a.status === "disbursed" || a.status === "repaid").length || 0} advances`,
       },
       {
-        label: "Monthly Revenue",
+        label: "Monthly Rent",
         value: `$${Math.round(totalMonthlyRevenue).toLocaleString()}`,
         icon: "solar:chart-2-bold",
         iconColor: "text-quaternary-05",

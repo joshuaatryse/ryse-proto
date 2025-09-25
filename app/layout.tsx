@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import DeviceCheck from "@/components/device-check";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={figtree.variable}>
       <body className={`${figtree.className} font-sans`}>
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          {children}
+          <DeviceCheck>
+            {children}
+          </DeviceCheck>
         </Providers>
       </body>
     </html>
